@@ -1,0 +1,41 @@
+expr用法实例：
+1. 计算字串长度
+'length STRING'
+te=$(expr length "abcd efg")
+echo $te
+
+2. 抓取字符串(下标)
+'substr STRING POSITION LENGTH'
+te=$(expr substr "abcdefghijk" 5 2)
+echo $te
+
+3.CHARSET中任意单个字符在STRING中最前面的字符位置。如果在STRING中完全不存在CHARSET中的字符，则返回0。
+'index STRING CHARSET'
+eg：te=$(expr index "abcdefghijk" sgd)
+    echo $te
+结果为4.
+
+4.整数运算（只能是整数计算）
+te=$(expr 1 \* 9)
+echo $te
+结果为9
+若
+te=$(expr 1\*9)
+echo $te
+结果为：1*9
+**注意：运算符与数字间一定要有空格 
+
+5.匹配)."string : REGEX"
+匹配时，REGEX中隐含了"^",所以匹配时都是从string首字符开始的
+expr aaa : 'a\+'    # 解释：因为REGEX部分没有使用\(\)，所以返回匹配的字符数
+=> 3
+expr abc : 'a\(.\)c'  # 解释：因为REGEX部分使用了\(\)，所以返回匹配的字符
+=> b
+expr index abcdef cz
+=> 3
+expr index index a    # 解释：因为第二个index是关键字
+error-> expr: syntax error
+expr index + index a  # 解释：使用+将index关键字解析为普通字符串
+=> 0
+
+

@@ -1,0 +1,125 @@
+Shell脚本编程
+Linux的Shell种类众多，常见的有：
+Bourne Shell（/usr/bin/sh或/bin/sh）
+Bourne Again Shell（/bin/bash）
+C Shell（/usr/bin/csh）
+K Shell（/usr/bin/ksh）
+Shell for Root（/sbin/sh）
+#! 告诉系统其后路径所指定的程序即是解释此脚本文件的 Shell 程序。
+
+shell定义变量
+命名只能使用英文字母，数字和下划线，首个字符不能以数字开头。
+中间不能有空格，可以使用下划线（_）。
+不能使用标点符号。
+不能使用bash里的关键字（可用help命令查看保留关键字）。
+
+命令替换
+$()与``(反引号)都是用来作命令替换的
+变量替换
+${}，一般情况下，$var与${var}是没有区别的，但是用${}会比较精确的界定变量名称的范
+围,eg:
+list="shell java Ada"
+for skill in $list;
+do
+    echo "I am good at ${skill}Script"
+done
+这样可以打印出三次，如果改成$skillScript，系统认为skillScript为一个变量（其值为空）
+，就出错了.
+
+实现两数相加
+A=5
+B=6
+echo $(($A+$B)) # 方法 2
+echo $[$A+$B]  # 方法 3
+expr $A + $B   # 方法 4
+echo $A+$B | bc # 方法 5
+awk 'BEGIN{print '"$A"'+'"$B"'}'  # 方法 6
+
+shell字符串
+字符串是shell编程中最常用最有用的数据类型（除了数字和字符串，也没啥其它类型好用了）
+，字符串可以用单引号，也可以用双引号，也可以不用引号。
+最好用双引号""
+双引号优点：1.双引号里可以有变量 2.双引号里可以出现转义字符
+
+拼接字符串
+your_name="runoob"
+# 使用双引号拼接
+greeting="hello, "$your_name" !"
+greeting_1="hello, ${your_name} !"
+echo $greeting  $greeting_1
+获取字符串长度
+1.echo ${#str}
+2.echo `expr length "$str"`
+提取子字符串
+string="runoob is a great site"
+1.echo ${string:1:4} # 输出 unoo
+2.echo `expr substr "$string" 1 4`
+查找子字符串
+echo `expr index "$string" io`  # 输出 4
+shell数组
+在 Shell 中，用括号来表示数组，数组元素用"空格"符号分割开。定义数组的一般形式为：
+array_name=(
+value0
+value1
+value2
+value3
+)
+读取数组元素值的一般格式：${数组名[下标]}
+echo ${array_name[n]} 打印时一定要带上{}，若下标为@代表所有元素
+echo ${array_name[*]} 打印数组长度
+
+shell传递参数
+$0 执行的文件名
+$1 第一个参数
+$2 第二个参数
+...
+另外：
+$* 以一个单字符串显示所有向脚本传递的参数
+$# 传递到脚本的参数个数
+$? 显示最后命令的退出状态。0表示没有错误，其他任何值表明有错误。 
+
+算数运算符
+shell不支持简单的数学运算，需要用awk或expr
+例：val=`expr 2 + 2` echo "两数之和：$val"
+注意：运算符两边必须有空格
+
+关系运算符
+只支持数字，不支持字符串，除非字符串里的值为数字。
+-eq 检测两个数是否相等，相等返回 true。 [ $a -eq $b ] 返回 false。 
+-ne 检测两个数是否不相等，不相等返回 true。 [ $a -ne $b ] 返回 true。 
+-gt 检测左边的数是否大于右边的，如果是，则返回 true。 [ $a -gt $b ] 返回 false。 
+-lt 检测左边的数是否小于右边的，如果是，则返回 true。 [ $a -lt $b ] 返回 true。 
+-ge 检测左边的数是否大于等于右边的，如果是，则返回 true。 [ $a -ge $b ] 返回 false
+-le 检测左边的数是否小于等于右边的，如果是，则返回 true。 [ $a -le $b ] 返回 true。 
+
+布尔运算符
+! 非运算，表达式为 true 则返回 false，否则返回 true。 [ ! false ] 返回 true。 
+-o 或运算，有一个表达式为 true 则返回 true。 [ $a -lt 20 -o $b -gt 100 ] 返回 true 
+-a 与运算，两个表达式都为 true 才返回 true。 [ $a -lt 20 -a $b -gt 100 ] 返回 false
+
+逻辑运算符
+&&  逻辑的 AND  [[ $a -lt 100 && $b -gt 100 ]] 返回 false 
+|| 逻辑的 OR [[ $a -lt 100 || $b -gt 100 ]] 返回 true 
+注意：[[]]双中括号，里面支持逻辑&&和||，但不支持-a和-o
+[]单中括号表达式，里面支持-a和-o，不支持&&和||，同时不支持< , >，需要转义字符\<
+类似？:的表达式在shell里可以用 []&&echo true||echo false来代替
+
+字符串运算符
+= 检测两个字符串是否相等，相等返回 true。 [ $a = $b ] 返回 false。 
+!= 检测两个字符串是否相等，不相等返回 true。 [ $a != $b ] 返回 true。 
+-z 检测字符串长度是否为0，为0返回 true。 [ -z $a ] 返回 false。 
+-n 检测字符串长度是否为0，不为0返回 true。 [ -n "$a" ] 返回 true。 
+str 检测字符串是否为空，不为空返回 true。 [ $a ] 返回 true。 
+注意：在[]表达式中，常见的<,>需要加转义字符，表示字符串大小的比较，以ASCII位置作比
+较，，还有||，&&,它们俩需要用-a，-o表示。
+
+文件测试运算符
+-u file 检测文件是否设置了 SUID 位，如果是，则返回 true。 [ -u $file ] 返回 false。 
+-r file 检测文件是否可读，如果是，则返回 true。 [ -r $file ] 返回 true。 
+-w file 检测文件是否可写，如果是，则返回 true。 [ -w $file ] 返回 true。 
+-x file 检测文件是否可执行，如果是，则返回 true。 [ -x $file ] 返回 true。 
+-s file 检测文件是否为空（文件大小是否大于0），不为空返回 true。 [ -s $file ] 返回 true
+-e file 检测文件（包括目录）是否存在，如果是，则返回 true。 [ -e $file ] 返回 true 
+-d file 检测文件是否是目录，如果是，则返回 true。 [ -d $file ] 返回 false。 
+-f file 检测文件是否是普通文件（既不是目录，也不是设备文件），如果是，则返回 true。 [ -f $file ] 返回 true
+

@@ -1,0 +1,372 @@
+Shell echo命令
+可以双引号，单引号，或省略
+1.echo -n "OK" -n 不换行
+2.echo -e "OK! \n" 开启转义
+3.显示结果定向至文件
+echo "It is a test" > myfile
+4.原样输出字符串，不进行转义或取变量(用单引号)
+echo '$name\"'
+5.显示命令执行结果
+echo `date`
+echo $(date)
+6.read命令（额外的）
+read命令一个一个词组地接收输入的参数，每个词组需要使用空格分隔，如果输入的词组大于需要的
+参数个数，则多出的词组将被作为一个整体为最后一个参数接收
+read firstStr secondStr
+echo "第一个参数:$firstStr; 第二个参数:$secondStr"
+如果输入1 2 3 4
+则输出：第一个参数：1； 第二个参数：2 3 4
+例read -p "请输入一段文字:" -n 6 -t 5 -s password
+  echo -e "\npassword is $password"
+参数说明
+-p 输入提示文字 
+-n 输入字符长度限制
+-t 输入限时 
+-s 隐藏输入内容
+
+Shell echo命令
+可以双引号，单引号，或省略
+1.echo -n "OK" -n 不换行
+2.echo -e "OK! \n" 开启转义
+3.显示结果定向至文件
+echo "It is a test" > myfile
+4.原样输出字符串，不进行转义或取变量(用单引号)
+echo '$name\"'
+5.显示命令执行结果
+echo `date`
+echo $(date)
+6.read命令（额外的）
+read命令一个一个词组地接收输入的参数，每个词组需要使用空格分隔，如果输入的词组大于需要的
+参数个数，则多出的词组将被作为一个整体为最后一个参数接收
+read firstStr secondStr
+echo "第一个参数:$firstStr; 第二个参数:$secondStr"
+如果输入1 2 3 4
+则输出：第一个参数：1； 第二个参数：2 3 4
+例read -p "请输入一段文字:" -n 6 -t 5 -s password
+  echo -e "\npassword is $password"
+参数说明
+-p 输入提示文字 
+-n 输入字符长度限制
+-t 输入限时 
+-s 隐藏输入内容
+
+printf命令同样是打印
+printf  format-string  [arguments...]
+例子
+printf "%-10s %-8s %-4s\n" 姓名 性别 体重kg  
+printf "%-10s %-8s %-4.2f\n" 郭靖 男 66.1234 
+printf "%-10s %-8s %-4.2f\n" 杨过 男 48.6543 
+printf "%-10s %-8s %-4.2f\n" 郭芙 女 47.9876 
+
+Shell中的test命令用于检查某个条件是否成立，它可以进行数值、字符和文件的测试。
+1. 数值测试
+-eq   等于则为真 
+-ne   不等于则为真 
+-gt   大于则为真 
+-ge   大于等于则为真 
+-lt   小于则为真 
+-le   小于等于则为真
+例子：
+num1=100
+num2=100
+if test $[num1] -eq $[num2]
+then
+    echo '两个数相等！'
+else
+    echo '两个数不相等！'
+fi
+2. 字符串测试
+=    等于则为真 
+!=   不相等则为真 
+-z   字符串 字符串的长度为零则为真 
+-n   字符串 字符串的长度不为零则为真
+例子：
+num1="ru1noob"
+num2="runoob"
+if test $num1 = $num2
+then
+    echo '两个字符串相等!'
+else
+    echo '两个字符串不相等!'
+fi
+3. 文件测试
+-e    文件名 如果文件存在则为真 
+-r    文件名 如果文件存在且可读则为真 
+-w    文件名 如果文件存在且可写则为真 
+-x    文件名 如果文件存在且可执行则为真 
+-s    文件名 如果文件存在且至少有一个字符则为真 
+-d    文件名 如果文件存在且为目录则为真 
+-f    文件名 如果文件存在且为普通文件则为真
+
+Shell 流程控制
+1. if语句（如果没有else分支就不要写这个else）
+if condition；then
+   cmd1
+   cmd2
+fi
+2. if else
+if condition
+then
+    command1 
+    command2
+    ...
+else
+    command
+fi
+3. if elif else
+if condition1
+then
+    command1
+elif condition2 
+then 
+    command2
+else
+    commandN
+fi
+
+4.循环
+4.1for循环
+一般格式为:
+for var in item1 item2 ... itemN
+do
+    command1
+    command2
+    ...
+    commandN
+done
+或者：
+取数时for i in {1..10..4}#代表取1到10（以4递增）中的数，也就是1 5 9
+同样的for i in `seq 1 4 10`使用seq时，操作数的顺序不一样
+do
+    echo $i
+    let "sum+=i"
+done
+
+for (())这种循环结构更偏向c的for语法
+例如for （（i=1; i<=9; i++））
+
+4.2while循环
+while condition
+do
+    command
+done
+4.3until循环
+和while一样，只不过当条件为真时候跳出循环，也就是条件为假的时候执行循环体
+
+5.case
+Shell case语句为多选择语句。可以用case语句匹配一个值与一个模式，如果匹配成功，执行相匹配
+的命令
+case 值 in
+模式1)
+    command1
+    command2
+    ...
+    commandN
+    ;;
+模式2）
+    command1
+    command2
+    ...
+    commandN
+    ;;
+    *)
+    commandN+1
+    ;;
+esac
+取值后面必须要为单词in，每个模式必须以右括号结束，结束命令用;;如果无匹配，使用星号*）捕
+获该值，在执行后面的命令
+例子：
+#!/bin/bash
+while :
+do
+    echo -n "输入 1 到 5 之间的数字:"
+    read aNum
+    case $aNum in
+        1|2|3|4|5) echo "你输入的数字为 $aNum!"  #可以写成这种模式
+        ;;
+        *) echo "你输入的数字不是 1 到 5 之间的! 游戏结束"
+            break
+        ;;
+    esac
+done
+
+跳出循环
+break命令
+break命令允许跳出所有循环
+continu命令只跳出当前循环
+
+Shell函数
+shell可以用户自定义函数，然后在shell脚本中随便调用
+
+[ function ] funname [()]
+
+{
+
+    action;
+
+    [return int;]
+
+}
+带[]代表可以省略，（）里面的参数可以省略，但是（）不可以省略，调用函数时候可以省略（）
+例子：
+#!/bin/bash
+# author:菜鸟教程
+# url:www.runoob.com
+
+funWithParam(){
+    echo "第一个参数为 $1 !"
+    echo "第二个参数为 $2 !"
+    echo "第十个参数为 $10 !"
+    echo "第十个参数为 ${10} !"
+    echo "第十一个参数为 ${11} !"
+    echo "参数总数有 $# 个!"
+    echo "作为一个字符串输出所有参数 $* !"
+}
+funWithParam 1 2 3 4 5 6 7 8 9 34 73
+输出结果：
+第一个参数为 1 !
+第二个参数为 2 !
+第十个参数为 10 !
+第十个参数为 34 !
+第十一个参数为 73 !
+参数总数有 11 个!
+作为一个字符串输出所有参数 1 2 3 4 5 6 7 8 9 34 73 !
+
+注意：
+1. $10不能获取第十个参数，获取第十个参数时候需要${10}。也就是说如果写成$10，会认为你是取
+$1再补上0。
+2. 在函数里面参数$1为函数传递进来的第一个参数，不是该shell脚本带的第一个参数，在函数外面
+使用$1为脚本带的第一个参数。
+
+
+
+Shell输入输出重定向
+command > file 将输出重定向到 file。 
+command < file 将输入重定向到 file。 
+command >> file 将输出以追加的方式重定向到 file。 
+n > file 将文件描述符为 n 的文件重定向到 file。 
+n >> file 将文件描述符为 n 的文件以追加的方式重定向到 file。 
+n >& m 将输出文件 m 和 n 合并。 
+n <& m 将输入文件 m 和 n 合并。 
+
+1.输出重定向
+command1 > file1，将输出的内容存入file1
+command1 >> file1, 将输出的内容在尾部添加，不覆盖存入file1
+注意任何file1内的已经存在的内容将被新内容替代，如果要将新内容添加在文件末尾，使用>>操作
+符
+
+2.输入重定向
+command1 < file1
+这样，本来需要从键盘获取输入的命令会转移到文件读取内容。 
+
+command1 < infile > outfile
+同时替换输入和输出，执行command1，从文件infile读取内容，然后将输出写入到outfile中。
+
+3.重定向深入讲解
+一般情况下，每个 Unix/Linux 命令运行时都会打开三个文件：
+标准输入文件(stdin)：stdin的文件描述符为0，Unix程序默认从stdin读取数据。
+标准输出文件(stdout)：stdout 的文件描述符为1，Unix程序默认向stdout输出数据。
+标准错误文件(stderr)：stderr的文件描述符为2，Unix程序会向stderr流中写入错误信息。
+
+默认情况下，command > file 将 stdout 重定向到 file，command < file 将stdin 重定向到 file
+。
+
+同样的Here Document是一种特殊的重定向方式，用来将输入重定向到一个交互式shell脚本或者程序
+command << delimiter
+    document
+delimiter
+它的作用是将两个delimiter之间的内容（document）作为输入传递给command
+
+**使用EOF时候常见的模式为：
+**cat << EOF > filename
+**作用是将标准输入的存入到filename里面
+
+***多行屏蔽***
+shell不支持多行屏蔽，只支持单行屏蔽使用#
+为了不麻烦，可以使用
+1. 
+: << EOF
+1111
+222
+3333
+444
+EOF
+2.
+fun(){
+1111
+222
+3333
+444
+}
+不调用函数fun即可屏蔽
+3.if false then;
+1111
+222
+3333
+444
+fi
+
+****几种EOF用法****
+1）向文件filename里面输入内容
+cat << EOF > filename
+> dds
+> EOF
+可以cat filename 看到里面的内容为输入的内容
+或者向文件filename里面追加内容
+cat << EOF >> filename
+3）
+***/dev/null文件***
+如果希望之星某个命令，但又不希望在屏幕上显示输出结果，那么可以将 输出重定向到/dev/null
+command > /dev/null
+写入到它的内容都会被丢弃，从该文件读也什么都读不到，可以将命令的输出重定向到它，会起到禁
+止输出的效果
+
+
+
+Shell文件包含
+Shell可以包含外部脚本
+. filename 或者 source filename
+其实就是运行另一个脚本
+
+****执行脚本的几种方式****
+1.绝对路径
+/tmp/ceshi.sh
+2.相对路径
+./ceshi.sh 
+3.bash命令调用
+bash /tmp/ceshi.sh
+4..或source(+空格)相对或绝对路径
+. /tmp/ceshi.sh
+第一种和第二种没有什么区别，两种方式都需要提前赋予脚本以执行权限。
+
+第三种是把脚本当做bash的调用来处理，所以，脚本不需要有执行权限就可以执行。
+
+前三种方式都是在当前shell中打开一个子shell来执行脚本内容，当脚本内容结束，则子shell关闭
+，回到父shell中。
+
+第四种是使脚本内容在当前shell里执行，而不是单独开子shell执行。
+***开子shell和不开子shell的区别***
+在于开子shell与不开子shell的区别就在于，环境变量的继承关系，如在子shell中设置的当前变量
+，不做特殊通道处理的话，父shell是不可见的。
+而在当前shell中执行的话，则所有设置的环境变量都是直接生效可用的。
+
+所以.或source可以当做包含其他的shell脚本，而另外三种方式不可以
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

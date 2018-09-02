@@ -1,0 +1,10 @@
+1.cat正向查看
+2.tac反向查看（按行来，即冲最后一行开始，但每行还是正序）
+3.head从头查看 可以添加-n（n为行数），表示从头看n行
+4.tail从尾部看 同样可以添加-n
+例如查看文件file的20-30行
+head -30 file | tail -11或者
+awk 'NR==20,NR==30' file或者
+sed -n '20,30p' file
+5.more
+6.less
